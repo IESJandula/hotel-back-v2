@@ -17,6 +17,14 @@ public class Reserva {
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
+    @ManyToMany
+    @JoinTable(
+            name = "reserva_habitacion",
+            joinColumns = @JoinColumn(name = "reserva_id"),
+            inverseJoinColumns = @JoinColumn(name = "habitacion_num")
+    )
+    private List<Habitacion> habitaciones;
+
     public Reserva(int id, Date fecha_inicio, Date fecha_fin) {
         this.id = id;
         this.fecha_inicio = fecha_inicio;
