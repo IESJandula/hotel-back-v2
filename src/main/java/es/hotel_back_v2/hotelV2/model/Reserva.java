@@ -3,6 +3,7 @@ package es.hotel_back_v2.hotelV2.model;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Reserva {
