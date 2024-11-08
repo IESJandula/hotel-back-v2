@@ -2,6 +2,8 @@ package es.hotel_back_v2.hotelV2.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Habitacion {
     @Id
