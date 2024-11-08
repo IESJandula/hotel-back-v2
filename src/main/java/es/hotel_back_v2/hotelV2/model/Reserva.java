@@ -18,6 +18,9 @@ public class Reserva {
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
+    @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL)
+    private List<Pago> pagos;
+
     @ManyToMany
     @JoinTable(
             name = "reserva_habitacion",
