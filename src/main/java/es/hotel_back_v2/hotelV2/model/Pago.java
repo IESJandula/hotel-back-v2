@@ -2,6 +2,8 @@ package es.hotel_back_v2.hotelV2.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 import java.time.LocalDate;
 
@@ -17,7 +19,9 @@ public class Pago {
 
     //relaciones
 
-
+    @ManyToOne
+    @JoinColumn(name = "reserva_id")
+    private Reserva reserva;
 
     //constructores
 
@@ -76,4 +80,13 @@ public class Pago {
     }
 
     //getters and setters de las relaciones
+
+
+    public Reserva getReserva() {
+        return reserva;
+    }
+
+    public void setReserva(Reserva reserva) {
+        this.reserva = reserva;
+    }
 }
