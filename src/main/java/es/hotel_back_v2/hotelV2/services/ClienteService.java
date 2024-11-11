@@ -39,20 +39,18 @@ public class ClienteService {
 
     //modificar cliente usando el DNI
     @Transactional
-    public Cliente updateCliente(String dni, Cliente clienteDetails) {
-        Optional <Cliente> clienteOptional = clienteRepository.findByDni(dni);
+    public Cliente updateCliente(String dni, Cliente clienteActualizado) {
+        Optional <Cliente> cliente = clienteRepository.findByDni(dni);
 
-        if (clienteOptional.isPresent()) {
+        if (cliente.isPresent()) {
 
-            Cliente cliente = clienteOptional.get();
+            cliente.get().setDni(clienteActualizado.getDni());
+            cliente.get().setNombre(clienteActualizado.getNombre());
+            cliente.get().setApellido(clienteActualizado.getApellido());
+            cliente.get().setEmail(clienteActualizado.getEmail());
+            cliente.get().setTelefono(clienteActualizado.getTelefono());
 
-            cliente.setDni(clienteDetails.getDni());
-            cliente.setNombre(clienteDetails.getNombre());
-            cliente.setApellido(clienteDetails.getApellido());
-            cliente.setEmail(clienteDetails.getEmail());
-            cliente.setTelefono(clienteDetails.getTelefono());
-
-            return clienteRepository.save(cliente);
+            return clienteRepository.save(cliente.get());
 
         } else {
 
