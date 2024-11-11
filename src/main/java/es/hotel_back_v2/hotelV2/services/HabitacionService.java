@@ -18,8 +18,8 @@ public class HabitacionService {
     private HabitacionRepository habitacionRepository;
 
     @Transactional
-    public void crearHabitacion(Habitacion habitacion) {
-        habitacionRepository.save(habitacion);
+    public Habitacion crearHabitacion(Habitacion habitacion) {
+        return habitacionRepository.save(habitacion);
     }
 
     public void eliminarHabitacion(Long numero) {
