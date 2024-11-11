@@ -18,8 +18,8 @@ public class ReservaService {
     private ReservaRepository reservaRepository;
 
     @Transactional
-    public void crearReserva(Reserva reserva) {
-        reservaRepository.save(reserva);
+    public Reserva crearReserva(Reserva reserva) {
+        return reservaRepository.save(reserva);
     }
 
     @Transactional
