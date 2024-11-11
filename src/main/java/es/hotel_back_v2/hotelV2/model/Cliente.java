@@ -88,4 +88,16 @@ public class Cliente {
     public void setReservas(List<Reserva> reservas) {
         this.reservas = reservas;
     }
+
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "dni='" + dni + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", email='" + email + '\'' +
+                ", reservas=" + reservas +
+                '}';
+    }
 }
