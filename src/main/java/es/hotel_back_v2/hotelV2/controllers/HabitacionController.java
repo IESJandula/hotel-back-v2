@@ -2,17 +2,23 @@ package es.hotel_back_v2.hotelV2.controllers;
 
 import es.hotel_back_v2.hotelV2.model.Habitacion;
 import es.hotel_back_v2.hotelV2.services.HabitacionService;
+import es.hotel_back_v2.hotelV2.services.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/habitacion")
 public class HabitacionController {
+
     @Autowired
     private HabitacionService habitacionService;
+
+    @Autowired
+    private ReservaService reservaService;
 
     @PostMapping
     public Habitacion agregarHabitacion(@RequestBody Habitacion habitacion) {
@@ -34,9 +40,10 @@ public class HabitacionController {
         habitacionService.eliminarHabitacion(numero);
     }
 
-
-
-
-
+    // Endpoint para obtener las habitaciones ocupadas en una fecha específica
+    @GetMapping("/habitaciones-ocupadas")
+    public List<Habitacion> obtenerHabitacionesOcupadas(@RequestParam("fecha") Date fecha) {
+        return habitacionService.obtenerHabitacionesOcupadas(fecha);
+    }
 
 }
