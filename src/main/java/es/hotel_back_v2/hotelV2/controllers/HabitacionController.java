@@ -20,6 +20,7 @@ public class HabitacionController {
     @Autowired
     private ReservaService reservaService;
 
+    //CRUD
     @PostMapping
     public Habitacion agregarHabitacion(@RequestBody Habitacion habitacion) {
         return habitacionService.crearHabitacion(habitacion);
@@ -40,7 +41,7 @@ public class HabitacionController {
         habitacionService.eliminarHabitacion(numero);
     }
 
-    // Endpoint para obtener las habitaciones ocupadas en una fecha específica
+    //Endpoint para obtener las habitaciones ocupadas en una fecha específica
     @GetMapping("/habitaciones-ocupadas")
     public List<Habitacion> obtenerHabitacionesOcupadas(@RequestParam("fecha") Date fecha) {
         return habitacionService.obtenerHabitacionesOcupadas(fecha);

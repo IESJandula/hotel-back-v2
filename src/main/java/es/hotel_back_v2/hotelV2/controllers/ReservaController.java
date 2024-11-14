@@ -18,7 +18,7 @@ public class ReservaController {
     private ReservaService reservaService;
 
     //Endpoint para crear una nueva reserva
-    @PostMapping
+    @PostMapping("/crear")
     public String crearReserva(@RequestBody Reserva reserva) {
         try {
             //Intentamos crear la reserva con los datos enviados por el cliente
@@ -31,7 +31,6 @@ public class ReservaController {
             return "Hubo un error al crear la reserva: " + e.getMessage();
         }
     }
-
 
     @GetMapping("/mostrartodas")
     public List<Reserva> buscarTodasReservas() {
