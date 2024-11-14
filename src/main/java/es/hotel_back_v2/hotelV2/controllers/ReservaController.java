@@ -17,10 +17,21 @@ public class ReservaController {
     @Autowired
     private ReservaService reservaService;
 
+    //Endpoint para crear una nueva reserva
     @PostMapping
-    public Reserva agregarReserva(@RequestBody Reserva reserva) {
-        return reservaService.crearReserva(reserva);
+    public String crearReserva(@RequestBody Reserva reserva) {
+        try {
+            //Intentamos crear la reserva con los datos enviados por el cliente
+            Reserva nuevaReserva = reservaService.crearReserva(reserva);
+
+            //Si la reserva se crea correctamente, devolvemos un mensaje indicando que fue creada
+            return "Reserva creada correctamente: " + nuevaReserva.getId();
+        } catch (Exception e) {
+            //Si ocurre un error, devolvemos un mensaje de error
+            return "Hubo un error al crear la reserva: " + e.getMessage();
+        }
     }
+
 
     @GetMapping("/mostrartodas")
     public List<Reserva> buscarTodasReservas() {
