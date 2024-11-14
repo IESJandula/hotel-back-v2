@@ -59,6 +59,30 @@ public class Reserva {
         this.fecha_fin = fecha_fin;
     }
 
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public List<Pago> getPagos() {
+        return pagos;
+    }
+
+    public void setPagos(List<Pago> pagos) {
+        this.pagos = pagos;
+    }
+
+    public List<Habitacion> getHabitaciones() {
+        return habitaciones;
+    }
+
+    public void setHabitaciones(List<Habitacion> habitaciones) {
+        this.habitaciones = habitaciones;
+    }
+
     @Override
     public String toString() {
         return "Reserva{" +
@@ -67,4 +91,5 @@ public class Reserva {
                 ", fecha_fin=" + fecha_fin +
                 '}';
     }
+
 }
