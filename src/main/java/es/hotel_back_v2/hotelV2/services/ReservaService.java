@@ -90,4 +90,20 @@ public class ReservaService {
         }
     }
 
+    //EndPoint para crear factura
+    public String generarFactura(int idReserva) {
+        Optional<Reserva> reservaOpt = reservaRepository.findById(idReserva);
+        if (reservaOpt.isEmpty()) {
+            throw new RuntimeException("Reserva no encontrada");
+        }
+        Reserva reserva = reservaOpt.get();
+
+        double total = reserva.getHabitaciones().stream().mapToDouble(Habitacion::getPrecio).sum();
+        return "Factura de la Reserva:\n" +
+                "Cliente: " + reserva.getCliente().getNombre() + " " + reserva.getCliente().getApellido() + "\n" +
+                "Fecha de Entrada: " + reserva.getFecha_inicio() + "\n" +
+                "Fecha de Salida: " + reserva.getFecha_fin() + "\n" +
+                "Total a Pagar: $" + total;
+    }
+
 }
