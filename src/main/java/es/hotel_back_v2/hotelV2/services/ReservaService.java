@@ -45,25 +45,30 @@ public class ReservaService {
     public boolean hayHabitacionesDisponibles(List<Habitacion> habitacionesSolicitadas, Date fechaInicio, Date fechaFin) {
         List<Reserva> todasReservas = reservaRepository.findAll();
 
-        for (Habitacion habitacion : habitacionesSolicitadas) {
-            for (Reserva reserva : todasReservas) {
+        // Recorremos todas las reservas existentes
+        for (Reserva reserva : todasReservas) {
+            // Verificamos si la reserva tiene habitaciones solicitadas
+            for (Habitacion habitacion : habitacionesSolicitadas) {
                 if (reserva.getHabitaciones().contains(habitacion)) {
-                    //Convertimos las fechas a milisegundos para hacer la comparación
+                    // Compara las fechas para verificar si hay solapamiento
                     long inicioExistente = reserva.getFecha_inicio().getTime();
                     long finExistente = reserva.getFecha_fin().getTime();
                     long nuevoInicio = fechaInicio.getTime();
                     long nuevoFin = fechaFin.getTime();
 
-                    //Si las fechas coinciden, devolvemos que no hay disponibilidad
-                    if ((nuevoInicio <= finExistente) && (nuevoFin >= inicioExistente)) {
+                    // Verificamos si hay solapamiento entre las fechas de la nueva reserva y la existente
+                    if (nuevoInicio < finExistente && nuevoFin > inicioExistente) {
+                        // Si hay solapamiento, devolvemos que la habitación está ocupada
+                        System.out.println("Habitación ocupada: " + habitacion.getNumero());
                         return false;
                     }
                 }
             }
         }
-        //No hubo coincidencias, así que hay disponibilidad
+        // Si no hay solapamiento, hay disponibilidad
         return true;
     }
+
 
     @Transactional
     public void eliminarReserva(int id) {
