@@ -41,7 +41,7 @@ public class HabitacionController {
     }
 
     @DeleteMapping("/eliminarHabitacion/{numero}")
-    public void eliminarHabitacion(@PathVariable Long numero) {
+    public void eliminarHabitacion(@PathVariable int numero) {
         habitacionService.eliminarHabitacion(numero);
     }
 

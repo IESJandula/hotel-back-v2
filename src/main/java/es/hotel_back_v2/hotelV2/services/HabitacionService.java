@@ -28,7 +28,7 @@ public class HabitacionService {
         return habitacionRepository.save(habitacion);
     }
 
-    public void eliminarHabitacion(Long numero) {
+    public void eliminarHabitacion(int numero) {
         habitacionRepository.deleteById(numero);
     }
 
