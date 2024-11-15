@@ -30,7 +30,7 @@ public class ClienteController {
     }
 
     //mostrar cliente
-    @GetMapping("/buscar/{id}")
+    @GetMapping("/buscar/{dni}")
     public Optional<Cliente> findCliente(@PathVariable String dni) {
         return clienteService.findCliente(dni);
     }
