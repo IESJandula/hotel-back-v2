@@ -27,7 +27,7 @@ public class ReservaService {
     @Transactional
     public Reserva crearReserva(Reserva reserva) {
         //Verificar si el cliente existe usando el DNI
-        Optional<Cliente> cliente = clienteRepository.findByDni(reserva.getCliente().getDni()); //Buscar cliente por DNI
+        Optional<Cliente> cliente = clienteRepository.findByDni(reserva.getCliente().getDni());
 
         //Si no encuentra al cliente, lanza una excepción
         if (!cliente.isPresent()) {
@@ -45,27 +45,27 @@ public class ReservaService {
     public boolean hayHabitacionesDisponibles(List<Habitacion> habitacionesSolicitadas, Date fechaInicio, Date fechaFin) {
         List<Reserva> todasReservas = reservaRepository.findAll();
 
-        // Recorremos todas las reservas existentes
+        //Recorremos todas las reservas existentes
         for (Reserva reserva : todasReservas) {
-            // Verificamos si la reserva tiene habitaciones solicitadas
+            //Verificamos si la reserva tiene habitaciones solicitadas
             for (Habitacion habitacion : habitacionesSolicitadas) {
                 if (reserva.getHabitaciones().contains(habitacion)) {
-                    // Compara las fechas para verificar si hay solapamiento
+                    //Compara las fechas para verificar si hay coincidencias
                     long inicioExistente = reserva.getFecha_inicio().getTime();
                     long finExistente = reserva.getFecha_fin().getTime();
                     long nuevoInicio = fechaInicio.getTime();
                     long nuevoFin = fechaFin.getTime();
 
-                    // Verificamos si hay solapamiento entre las fechas de la nueva reserva y la existente
+                    //Verificamos si hay coincidencias entre las fechas de la nueva reserva y la existente
                     if (nuevoInicio < finExistente && nuevoFin > inicioExistente) {
-                        // Si hay solapamiento, devolvemos que la habitación está ocupada
+                        //Si coinciden, devolvemos que la habitación está ocupada
                         System.out.println("Habitación ocupada: " + habitacion.getNumero());
                         return false;
                     }
                 }
             }
         }
-        // Si no hay solapamiento, hay disponibilidad
+        //Si no hay coincidencias, hay disponibilidad
         return true;
     }
 
