@@ -24,13 +24,13 @@ public class ClienteController {
     }
 
     //eliminar cliente
-    @DeleteMapping
+    @DeleteMapping("/eliminar/{dni}")
     public void delete(@PathVariable String dni) {
         clienteService.deleteCliente(dni);
     }
 
     //mostrar cliente
-    @GetMapping
+    @GetMapping("/buscar/{id}")
     public Optional<Cliente> findCliente(@PathVariable String dni) {
         return clienteService.findCliente(dni);
     }
