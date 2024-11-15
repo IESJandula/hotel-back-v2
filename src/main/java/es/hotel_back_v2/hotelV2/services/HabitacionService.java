@@ -36,8 +36,9 @@ public class HabitacionService {
         return habitacionRepository.findAll();
     }
 
-    public Optional<Habitacion> buscarHabitacionPorId(Long numero) {
-       return habitacionRepository.findById(numero);
+    public Habitacion buscarPorNumero(int numero) {
+        return habitacionRepository.findByNumero(numero)
+                .orElseThrow(() -> new RuntimeException("Habitación no encontrada"));
     }
 
     //Método para encontrar habitaciones ocupadas en una fecha específica

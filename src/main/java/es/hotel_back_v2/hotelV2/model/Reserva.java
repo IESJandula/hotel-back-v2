@@ -35,6 +35,10 @@ public class Reserva {
         this.fecha_fin = fecha_fin;
     }
 
+    public Reserva() {
+
+    }
+
     public int getId() {
         return id;
     }
