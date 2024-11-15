@@ -1,5 +1,6 @@
 package es.hotel_back_v2.hotelV2.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -16,6 +17,7 @@ public class Reserva {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
+    @JsonBackReference //Evita que se serialice la relación inversa
     private Cliente cliente;
 
     @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL)

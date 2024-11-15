@@ -1,5 +1,6 @@
 package es.hotel_back_v2.hotelV2.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -20,6 +21,7 @@ public class Cliente {
     //relaciones
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    @JsonManagedReference //Marca esta relación como la principal en la serialización
     private List<Reserva> reservas;
 
 
