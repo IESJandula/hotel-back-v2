@@ -71,7 +71,7 @@ public class ReservaService {
 
 
     @Transactional
-    public void eliminarReserva(int id) {
+    public void eliminarReserva(Long id) {
         reservaRepository.deleteById(id);
     }
 
@@ -79,12 +79,12 @@ public class ReservaService {
         return reservaRepository.findAll();
     }
 
-    public Optional<Reserva> buscarReservaPorId(int id) {
+    public Optional<Reserva> buscarReservaPorId(Long id) {
         return reservaRepository.findById(id);
     }
 
     @Transactional
-    public Reserva modificarReserva(int id, Reserva reservaActualizada) {
+    public Reserva modificarReserva(Long id, Reserva reservaActualizada) {
         Optional<Reserva> reserva = reservaRepository.findById(id);
         if (reserva.isPresent()) {
             reserva.get().setFecha_inicio(reservaActualizada.getFecha_inicio());
@@ -96,7 +96,7 @@ public class ReservaService {
     }
 
     //EndPoint para crear factura
-    public String generarFactura(int idReserva) {
+    public String generarFactura(Long idReserva) {
         Optional<Reserva> reservaOpt = reservaRepository.findById(idReserva);
         if (reservaOpt.isEmpty()) {
             throw new RuntimeException("Reserva no encontrada");

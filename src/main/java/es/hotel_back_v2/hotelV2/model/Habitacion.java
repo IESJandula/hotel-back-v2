@@ -8,7 +8,7 @@ import java.util.List;
 public class Habitacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int numero;
+    private Long numero;
     private String tipo;
     private double precio;
     private String estado;
@@ -26,11 +26,11 @@ public class Habitacion {
     }
     public Habitacion() {}
 
-    public int getNumero() {
+    public Long getNumero() {
         return numero;
     }
 
-    public void setNumero(int numero) {
+    public void setNumero(Long numero) {
         this.numero = numero;
     }
 

@@ -28,7 +28,7 @@ public class HabitacionService {
         return habitacionRepository.save(habitacion);
     }
 
-    public void eliminarHabitacion(int numero) {
+    public void eliminarHabitacion(Long numero) {
         habitacionRepository.deleteById(numero);
     }
 
@@ -36,8 +36,8 @@ public class HabitacionService {
         return habitacionRepository.findAll();
     }
 
-    public Habitacion buscarPorNumero(int numero) {
-        return habitacionRepository.findByNumero(numero)
+    public Habitacion buscarPorNumero(Long numero) {
+        return habitacionRepository.findById(numero)
                 .orElseThrow(() -> new RuntimeException("Habitación no encontrada"));
     }
 

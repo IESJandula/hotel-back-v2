@@ -10,7 +10,8 @@ import java.util.List;
 public class Reserva {
 
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private Date fecha_inicio;
     private Date fecha_fin;
@@ -31,7 +32,7 @@ public class Reserva {
     )
     private List<Habitacion> habitaciones;
 
-    public Reserva(int id, Date fecha_inicio, Date fecha_fin) {
+    public Reserva(Long id, Date fecha_inicio, Date fecha_fin) {
         this.id = id;
         this.fecha_inicio = fecha_inicio;
         this.fecha_fin = fecha_fin;
@@ -41,11 +42,11 @@ public class Reserva {
 
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

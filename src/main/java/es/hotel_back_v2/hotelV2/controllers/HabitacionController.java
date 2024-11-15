@@ -1,6 +1,7 @@
 package es.hotel_back_v2.hotelV2.controllers;
 
 import es.hotel_back_v2.hotelV2.model.Habitacion;
+import es.hotel_back_v2.hotelV2.repositories.HabitacionRepository;
 import es.hotel_back_v2.hotelV2.services.HabitacionService;
 import es.hotel_back_v2.hotelV2.services.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class HabitacionController {
     @Autowired
     private ReservaService reservaService;
 
+    @Autowired
+    private HabitacionRepository habitacionRepository;
+
     //CRUD
     @PostMapping
     public Habitacion agregarHabitacion(@RequestBody Habitacion habitacion) {
@@ -35,13 +39,13 @@ public class HabitacionController {
     }
 
     @GetMapping("/buscarporNumero/{numero}")
-    public ResponseEntity<Habitacion> buscarPorNumero(@PathVariable int numero) {
+    public ResponseEntity<Optional<Habitacion>> buscarPorNumero(@PathVariable Long numero) {
         // Lógica de búsqueda
-        return ResponseEntity.ok(habitacionService.buscarPorNumero(numero));
+        return ResponseEntity.ok(habitacionRepository.findById(numero));
     }
 
     @DeleteMapping("/eliminarHabitacion/{numero}")
-    public void eliminarHabitacion(@PathVariable int numero) {
+    public void eliminarHabitacion(@PathVariable Long numero) {
         habitacionService.eliminarHabitacion(numero);
     }
 

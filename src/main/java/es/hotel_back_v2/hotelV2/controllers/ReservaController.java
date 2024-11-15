@@ -38,23 +38,23 @@ public class ReservaController {
     }
 
     @GetMapping("/buscarporid/{id}")
-    public Optional<Reserva> buscarReservaPorId(@PathVariable int id) {
+    public Optional<Reserva> buscarReservaPorId(@PathVariable Long id) {
         return reservaService.buscarReservaPorId(id);
     }
 
     @DeleteMapping("/eliminar/{id}")
-    public void eliminarReserva(@PathVariable int id) {
+    public void eliminarReserva(@PathVariable Long id) {
         reservaService.eliminarReserva(id);
     }
 
     @PutMapping("/modificar/{id}")
-    public Reserva modificarReserva(@PathVariable int id, @RequestBody Reserva reservaActualizada) {
+    public Reserva modificarReserva(@PathVariable Long id, @RequestBody Reserva reservaActualizada) {
         return reservaService.modificarReserva(id, reservaActualizada);
     }
 
     //EndPoint crear factura apartir de una reeserva
     @GetMapping("/generarFactura/{idReserva}")
-    public ResponseEntity<String> generarFactura(@PathVariable int idReserva) {
+    public ResponseEntity<String> generarFactura(@PathVariable Long idReserva) {
         try {
             String factura = reservaService.generarFactura(idReserva);
             return ResponseEntity.ok(factura);

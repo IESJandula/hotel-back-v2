@@ -7,6 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface HabitacionRepository extends JpaRepository<Habitacion, Integer> {
-    Optional<Habitacion> findByNumero(int numero);
+public interface HabitacionRepository extends JpaRepository<Habitacion, Long> {
 }
