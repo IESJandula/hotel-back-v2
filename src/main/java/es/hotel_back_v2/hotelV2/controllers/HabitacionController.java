@@ -6,6 +6,7 @@ import es.hotel_back_v2.hotelV2.services.HabitacionService;
 import es.hotel_back_v2.hotelV2.services.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,33 +27,36 @@ public class HabitacionController {
     @Autowired
     private HabitacionRepository habitacionRepository;
 
-    //CRUD
+    //añadir habitación
     @PostMapping
-    public Habitacion agregarHabitacion(@RequestBody Habitacion habitacion) {
-        return habitacionService.crearHabitacion(habitacion);
+    public ResponseEntity<Habitacion> agregarHabitacion(@RequestBody Habitacion habitacion) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(habitacionService.crearHabitacion(habitacion));
     }
 
+    //mostrar todas las habitaciones
     @GetMapping("/mostrarTodas")
-    public List<Habitacion> buscarTodasHabitaciones() {
-        return habitacionService.buscarHabitaciones();
+    public ResponseEntity<List<Habitacion>> buscarTodasHabitaciones() {
+        return ResponseEntity.ok(habitacionRepository.findAll());
 
     }
 
+    //mostrar habitación por número
     @GetMapping("/buscarporNumero/{numero}")
     public ResponseEntity<Optional<Habitacion>> buscarPorNumero(@PathVariable Long numero) {
-        // Lógica de búsqueda
         return ResponseEntity.ok(habitacionRepository.findById(numero));
     }
 
+    //eliminar habitación por número
     @DeleteMapping("/eliminarHabitacion/{numero}")
     public void eliminarHabitacion(@PathVariable Long numero) {
         habitacionService.eliminarHabitacion(numero);
     }
 
-    //Endpoint para obtener las habitaciones ocupadas en una fecha específica
+    //obtener las habitaciones ocupadas en una fecha específica
     @GetMapping("/habitaciones-ocupadas/{fecha}")
-    public List<Habitacion> obtenerHabitacionesOcupadas(@PathVariable("fecha") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha) {
-        return habitacionService.obtenerHabitacionesOcupadas(fecha);
+    public ResponseEntity<List<Habitacion>> obtenerHabitacionesOcupadas(@PathVariable("fecha") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha) {
+        return ResponseEntity.ok(habitacionService.obtenerHabitacionesOcupadas(fecha));
     }
+
 
 }

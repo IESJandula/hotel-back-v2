@@ -19,27 +19,27 @@ public class ClienteController {
 
     //añadir cliente
     @PostMapping
-    public Cliente create(@RequestBody Cliente cliente) {
-        return clienteService.save(cliente);
+    public ResponseEntity<Cliente> create(@RequestBody Cliente cliente) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.save(cliente));
     }
 
-    //eliminar cliente
+    //eliminar cliente por dni
     @DeleteMapping("/eliminar/{dni}")
     public void delete(@PathVariable String dni) {
         clienteService.deleteCliente(dni);
     }
 
-    //mostrar cliente
+    //mostrar cliente por dni
     @GetMapping("/buscar/{dni}")
-    public Optional<Cliente> findCliente(@PathVariable String dni) {
-        return clienteService.findCliente(dni);
+    public ResponseEntity<Optional<Cliente>> findCliente(@PathVariable String dni) {
+        return ResponseEntity.ok(clienteService.findCliente(dni));
     }
 
-    //modificar cliente
+    //modificar cliente por dni
     @PutMapping("/modificarpordni/{dni}")
-    public Cliente updateCliente(@PathVariable String dni, @RequestBody Cliente clienteActualizado) {
+    public ResponseEntity<Cliente> updateCliente(@PathVariable String dni, @RequestBody Cliente clienteActualizado) {
 
-        return clienteService.updateCliente(dni, clienteActualizado);
+        return ResponseEntity.ok(clienteService.updateCliente(dni, clienteActualizado));
 
     }
 }

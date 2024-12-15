@@ -4,6 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 
 import java.time.LocalDate;
 
@@ -12,9 +16,17 @@ public class Pago {
 
     @Id
     private Long id;
+
+    @DecimalMin(value = "0.01", message = "El monto debe ser mayor que 0")
     private float monto;
+
+    @NotBlank(message = "El método de pago no puede estar vacío")
     private String metodo;
+
     private String factura;
+
+    @NotNull(message = "La fecha de pago no puede ser nula")
+    @PastOrPresent(message = "La fecha de pago no puede ser futura")
     private LocalDate fecha;
 
     //relaciones
@@ -36,8 +48,7 @@ public class Pago {
         this.fecha = fecha;
     }
 
-    //Getters and Setters
-
+    //getters and setters
 
     public Long getId() {
         return id;
@@ -78,9 +89,6 @@ public class Pago {
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
-
-    //getters and setters de las relaciones
-
 
     public Reserva getReserva() {
         return reserva;

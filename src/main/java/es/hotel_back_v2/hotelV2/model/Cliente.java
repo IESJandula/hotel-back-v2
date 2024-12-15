@@ -5,6 +5,9 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 import java.util.List;
 
@@ -13,15 +16,25 @@ public class Cliente {
 
     @Id
     private String dni;
+
+    @NotBlank(message = "El nombre no puede estar vacío")
     private String nombre;
+
+    @NotBlank(message = "El apellido no puede estar vacío")
     private String apellido;
+
+    @NotBlank(message = "El teléfono no puede estar vacío")
+    @Pattern(regexp = "\\d{9}", message = "El teléfono debe tener 9 dígitos")
     private String telefono;
+
+    @Email(message = "El email debe tener un formato válido")
+    @NotBlank(message = "El email no puede estar vacío")
     private String email;
 
     //relaciones
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-    @JsonManagedReference //Marca esta relación como la principal en la serialización
+    @JsonManagedReference //marca esta relación como la principal en la serialización
     private List<Reserva> reservas;
 
 
@@ -79,9 +92,6 @@ public class Cliente {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    //getters and setters de las relaciones
-
 
     public List<Reserva> getReservas() {
         return reservas;

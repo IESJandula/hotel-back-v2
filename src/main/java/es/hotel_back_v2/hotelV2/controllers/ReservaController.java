@@ -17,42 +17,46 @@ public class ReservaController {
     @Autowired
     private ReservaService reservaService;
 
-    //Endpoint para crear una nueva reserva
+    //crear reserva
     @PostMapping("/crear")
     public String crearReserva(@RequestBody Reserva reserva) {
         try {
-            //Intentamos crear la reserva con los datos enviados por el cliente
+            //intentamos crear la reserva con los datos enviados por el cliente
             Reserva nuevaReserva = reservaService.crearReserva(reserva);
 
-            //Si la reserva se crea correctamente, devolvemos un mensaje indicando que fue creada
+            //si la reserva se crea correctamente, devolvemos un mensaje indicando que fue creada
             return "Reserva creada correctamente: " + nuevaReserva.getId();
         } catch (Exception e) {
-            //Si ocurre un error, devolvemos un mensaje de error
+            //si ocurre un error, devolvemos un mensaje de error
             return "Hubo un error al crear la reserva: " + e.getMessage();
         }
     }
 
+    //mostrar todas las reservas
     @GetMapping("/mostrartodas")
-    public List<Reserva> buscarTodasReservas() {
-        return reservaService.buscarTodas();
+    public ResponseEntity<List<Reserva>> buscarTodasReservas() {
+        return ResponseEntity.ok(reservaService.buscarTodas());
     }
 
+    //mostrar reserva por id
     @GetMapping("/buscarporid/{id}")
-    public Optional<Reserva> buscarReservaPorId(@PathVariable Long id) {
-        return reservaService.buscarReservaPorId(id);
+    public ResponseEntity<Optional<Reserva>> buscarReservaPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(reservaService.buscarReservaPorId(id));
     }
 
+    //eliminar reserva por id
     @DeleteMapping("/eliminar/{id}")
     public void eliminarReserva(@PathVariable Long id) {
         reservaService.eliminarReserva(id);
     }
 
+    //modificar reserva por id
     @PutMapping("/modificar/{id}")
-    public Reserva modificarReserva(@PathVariable Long id, @RequestBody Reserva reservaActualizada) {
-        return reservaService.modificarReserva(id, reservaActualizada);
+    public ResponseEntity<Reserva> modificarReserva(@PathVariable Long id, @RequestBody Reserva reservaActualizada) {
+        return ResponseEntity.ok(reservaService.modificarReserva(id, reservaActualizada));
     }
 
-    //EndPoint crear factura apartir de una reeserva
+    //crear factura apartir de una reserva
     @GetMapping("/generarFactura/{idReserva}")
     public ResponseEntity<String> generarFactura(@PathVariable Long idReserva) {
         try {
@@ -62,6 +66,5 @@ public class ReservaController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al generar factura");
         }
     }
-
 
 }

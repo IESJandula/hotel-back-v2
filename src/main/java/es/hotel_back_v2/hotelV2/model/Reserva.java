@@ -2,6 +2,9 @@ package es.hotel_back_v2.hotelV2.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 import java.util.List;
@@ -13,12 +16,19 @@ public class Reserva {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "La fecha de inicio no puede ser nula")
+    @FutureOrPresent(message = "La fecha de inicio no puede ser pasada")
     private Date fecha_inicio;
+
+    @NotNull(message = "La fecha de fin no puede ser nula")
+    @Future(message = "La fecha de fin debe ser futura")
     private Date fecha_fin;
+
+    //relaciones
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    @JsonBackReference //Evita que se serialice la relación inversa
+    @JsonBackReference //evita que se serialice la relación inversa
     private Cliente cliente;
 
     @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL)
@@ -32,6 +42,8 @@ public class Reserva {
     )
     private List<Habitacion> habitaciones;
 
+    //constructores
+
     public Reserva(Long id, Date fecha_inicio, Date fecha_fin) {
         this.id = id;
         this.fecha_inicio = fecha_inicio;
@@ -41,6 +53,8 @@ public class Reserva {
     public Reserva() {
 
     }
+
+    //getters and setters
 
     public Long getId() {
         return id;

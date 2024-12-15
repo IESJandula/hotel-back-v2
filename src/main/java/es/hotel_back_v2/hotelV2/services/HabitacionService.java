@@ -6,7 +6,6 @@ import es.hotel_back_v2.hotelV2.repositories.HabitacionRepository;
 import es.hotel_back_v2.hotelV2.repositories.ReservaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,43 +22,53 @@ public class HabitacionService {
     @Autowired
     private ReservaRepository reservaRepository;
 
+    //crear habitación
     @Transactional
     public Habitacion crearHabitacion(Habitacion habitacion) {
+        habitacion.setEstado("disponible"); //aseguramos que el estado inicial sea "disponible"
         return habitacionRepository.save(habitacion);
     }
 
+    //eliminar habitación por número
     public void eliminarHabitacion(Long numero) {
         habitacionRepository.deleteById(numero);
     }
 
+    //modificar estado de la habitación
+    @Transactional
+    public void actualizarEstadoHabitacion(Long numeroHabitacion, String estado) {
+        Optional<Habitacion> habitacion = habitacionRepository.findById(numeroHabitacion);
+        if (habitacion.isPresent()) {
+            Habitacion h = habitacion.get();
+            h.setEstado(estado);  //establece el estado de la habitación
+            habitacionRepository.save(h);
+        } else {
+            throw new RuntimeException("Habitación no encontrada");
+        }
+    }
+
+    //mostrar todas las habitaciones
     public List<Habitacion> buscarHabitaciones() {
         return habitacionRepository.findAll();
     }
 
+    //mostrar habitación por número
     public Habitacion buscarPorNumero(Long numero) {
         return habitacionRepository.findById(numero)
                 .orElseThrow(() -> new RuntimeException("Habitación no encontrada"));
     }
 
-    //Método para encontrar habitaciones ocupadas en una fecha específica
+    //obtener habitaciones ocupadas
     public List<Habitacion> obtenerHabitacionesOcupadas(Date fecha) {
-        //Lista que guardará las habitaciones ocupadas
         List<Habitacion> habitacionesOcupadas = new ArrayList<>();
-
-        //Obtener todas las reservas
         List<Reserva> reservas = reservaRepository.findAll();
 
-        //Recorremos todas las reservas
         for (Reserva reserva : reservas) {
-            //Verificamos si la fecha está entre la fecha de inicio y la fecha de fin de la reserva
             if (fecha.after(reserva.getFecha_inicio()) && fecha.before(reserva.getFecha_fin())) {
-                //Añadimos todas las habitaciones de esa reserva
                 habitacionesOcupadas.addAll(reserva.getHabitaciones());
             }
         }
 
-        //Devolvemos la lista de habitaciones ocupadas
         return habitacionesOcupadas;
     }
-
 }

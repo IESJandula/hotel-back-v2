@@ -1,6 +1,9 @@
 package es.hotel_back_v2.hotelV2.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 
@@ -9,14 +12,24 @@ public class Habitacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long numero;
+
+    @NotBlank(message = "El tipo de habitación no puede estar vacío")
     private String tipo;
+
+    @DecimalMin(value = "0.01", message = "El precio debe ser mayor que 0")
     private double precio;
-    private String estado;
+
+    private String estado = "disponible"; //valor predeterminado
+
+    @Min(value = 1, message = "La capacidad debe ser al menos 1 persona")
     private int capacidad;
 
-    //Relacion con Reserva
+    //relaciones
+
     @ManyToMany(mappedBy = "habitaciones")
     private List<Reserva> reservas;
+
+    //constructores
 
     public Habitacion(String tipo, double precio, String estado, int capacidad) {
         this.tipo = tipo;
@@ -24,7 +37,10 @@ public class Habitacion {
         this.estado = estado;
         this.capacidad = capacidad;
     }
+
     public Habitacion() {}
+
+    //getters and setters
 
     public Long getNumero() {
         return numero;

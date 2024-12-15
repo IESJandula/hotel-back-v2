@@ -9,12 +9,12 @@ import java.util.Optional;
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
-    //Metodo para verificar si existe un cliente con el dni dado
+    //método para verificar si existe un cliente con el dni dado
     boolean existsByDni(String dni);
 
-    //Metodo para encontrar un cliente por DNI
+    //método para encontrar un cliente por DNI
     Optional<Cliente> findByDni(String dni);
 
-    //Metodo para eliminar un cliente por dni
+    //método para eliminar un cliente por dni
     void deleteByDni(String dni);
 }
