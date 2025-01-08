@@ -9,10 +9,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservaService {
@@ -125,5 +123,16 @@ public class ReservaService {
                 "Fecha de Salida: " + reserva.getFecha_fin() + "\n" +
                 "Total a Pagar: $" + total;
     }
+
+    //listar reservas por fecha
+    public Map<Date, List<Reserva>> listarReservasAgrupadasPorFecha() {
+        //obtener todas las reservas
+        List<Reserva> reservas = reservaRepository.findAll();
+
+        //agrupar las reservas por su fecha de inicio
+        return reservas.stream()
+                .collect(Collectors.groupingBy(Reserva::getFecha_inicio));
+    }
+
 
 }
