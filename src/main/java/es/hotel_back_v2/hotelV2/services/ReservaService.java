@@ -4,10 +4,13 @@ import es.hotel_back_v2.hotelV2.model.Cliente;
 import es.hotel_back_v2.hotelV2.model.Habitacion;
 import es.hotel_back_v2.hotelV2.model.Reserva;
 import es.hotel_back_v2.hotelV2.repositories.ClienteRepository;
+import es.hotel_back_v2.hotelV2.repositories.HabitacionRepository;
 import es.hotel_back_v2.hotelV2.repositories.ReservaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,29 +27,52 @@ public class ReservaService {
     @Autowired
     private HabitacionService habitacionService;
 
+    @Autowired
+    private HabitacionRepository habitacionRepository;
+
     //crear reserva
     @Transactional
-    public Reserva crearReserva(Reserva reserva) {
-        //comprobamos si el cliente existe
-        Optional<Cliente> cliente = clienteRepository.findByDni(reserva.getCliente().getDni());
-        if (cliente.isEmpty()) {
-            throw new RuntimeException("El cliente no existe");
+    public Reserva crearReserva(@RequestParam Date fechaInicio, Date fechaFin, String dniCliente, List<Long> numerosHabitaciones) {
+        // Comprobar si el cliente existe
+        Optional<Cliente> clienteOpt = clienteRepository.findByDni(dniCliente);
+        if (clienteOpt.isEmpty()) {
+            throw new RuntimeException("El cliente no existe con el DNI proporcionado: " + dniCliente);
+        }
+        Cliente cliente = clienteOpt.get();
+
+        // Validar que las habitaciones existen y están disponibles
+        List<Habitacion> habitaciones = habitacionRepository.findAllById(numerosHabitaciones);
+        if (habitaciones.size() != numerosHabitaciones.size()) {
+            throw new RuntimeException("Una o más habitaciones no existen.");
+        }
+        for (Habitacion habitacion : habitaciones) {
+            if (!habitacion.getEstado().equals("disponible")) {
+                throw new RuntimeException("La habitación " + habitacion.getNumero() + " no está disponible.");
+            }
         }
 
-        //validamos si las habitaciones solicitadas están disponibles
-        if (!hayHabitacionesDisponibles(reserva.getHabitaciones(), reserva.getFecha_inicio(), reserva.getFecha_fin())) {
-            throw new RuntimeException("Las habitaciones solicitadas ya están ocupadas en las fechas seleccionadas.");
+        // Validar que las fechas son coherentes
+        if (fechaInicio.after(fechaFin)) {
+            throw new RuntimeException("La fecha de inicio no puede ser posterior a la fecha de fin.");
         }
 
-        //si las habitaciones están disponibles, guardamos la reserva
-        reservaRepository.save(reserva);
+        // Crear la reserva
+        Reserva nuevaReserva = new Reserva();
+        nuevaReserva.setFecha_inicio(fechaInicio);
+        nuevaReserva.setFecha_fin(fechaFin);
+        nuevaReserva.setCliente(cliente);
+        nuevaReserva.setHabitaciones(habitaciones);
 
-        //actualizamos el estado de las habitaciones a 'ocupadas'
-        for (Habitacion habitacion : reserva.getHabitaciones()) {
+        // Guardar la reserva
+        reservaRepository.save(nuevaReserva);
+
+        // Marcar las habitaciones como ocupadas
+        for (Habitacion habitacion : habitaciones) {
             habitacionService.actualizarEstadoHabitacion(habitacion.getNumero(), Habitacion.Estado.OCUPADA);
+            habitacionRepository.save(habitacion);
         }
 
-        return reserva;
+        return nuevaReserva;
     }
 
     //comprobar si las habitaciones están disponibles

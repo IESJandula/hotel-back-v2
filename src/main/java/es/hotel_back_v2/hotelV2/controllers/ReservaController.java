@@ -21,11 +21,10 @@ public class ReservaController {
 
     //crear reserva
     @PostMapping("/crear")
-    public String crearReserva(@RequestBody Reserva reserva) {
+    public String crearReserva(Date fechaInicio, Date fechaFin, String dniCliente, List<Long> numerosHabitaciones) {
         try {
             //intentamos crear la reserva con los datos enviados por el cliente
-            Reserva nuevaReserva = reservaService.crearReserva(reserva);
-
+            Reserva nuevaReserva = reservaService.crearReserva( fechaInicio,fechaFin, dniCliente,numerosHabitaciones);
             //si la reserva se crea correctamente, devolvemos un mensaje indicando que fue creada
             return "Reserva creada correctamente: " + nuevaReserva.getId();
         } catch (Exception e) {
