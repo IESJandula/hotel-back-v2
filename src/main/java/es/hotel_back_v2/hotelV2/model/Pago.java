@@ -1,9 +1,6 @@
 package es.hotel_back_v2.hotelV2.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,8 +17,9 @@ public class Pago {
     @DecimalMin(value = "0.01", message = "El monto debe ser mayor que 0")
     private float monto;
 
+    @Enumerated(EnumType.STRING)
     @NotBlank(message = "El método de pago no puede estar vacío")
-    private String metodo;
+    private MetodoPago metodo;
 
     private String factura;
 
@@ -40,7 +38,13 @@ public class Pago {
     public Pago() {
     }
 
-    public Pago(Long id, float monto, String metodo, String factura, LocalDate fecha) {
+    public enum MetodoPago {
+        TARJETA,
+        PAYPAL,
+        PAYSAFECARD
+    }
+
+    public Pago(Long id, float monto, MetodoPago metodo, String factura, LocalDate fecha) {
         this.id = id;
         this.monto = monto;
         this.metodo = metodo;
@@ -66,11 +70,11 @@ public class Pago {
         this.monto = monto;
     }
 
-    public String getMetodo() {
+    public MetodoPago getMetodo() {
         return metodo;
     }
 
-    public void setMetodo(String metodo) {
+    public void setMetodo(MetodoPago metodo) {
         this.metodo = metodo;
     }
 

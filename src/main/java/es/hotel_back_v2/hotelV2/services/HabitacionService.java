@@ -25,7 +25,7 @@ public class HabitacionService {
     //crear habitación
     @Transactional
     public Habitacion crearHabitacion(Habitacion habitacion) {
-        habitacion.setEstado("disponible"); //aseguramos que el estado inicial sea "disponible"
+        habitacion.setEstado(Habitacion.Estado.DISPONIBLE); //aseguramos que el estado inicial sea "disponible"
         return habitacionRepository.save(habitacion);
     }
 
@@ -36,7 +36,7 @@ public class HabitacionService {
 
     //modificar estado de la habitación
     @Transactional
-    public void actualizarEstadoHabitacion(Long numeroHabitacion, String estado) {
+    public void actualizarEstadoHabitacion(Long numeroHabitacion, Habitacion.Estado estado) {
         Optional<Habitacion> habitacion = habitacionRepository.findById(numeroHabitacion);
         if (habitacion.isPresent()) {
             Habitacion h = habitacion.get();

@@ -19,7 +19,9 @@ public class Habitacion {
     @DecimalMin(value = "0.01", message = "El precio debe ser mayor que 0")
     private double precio;
 
-    private String estado = "disponible"; //valor predeterminado
+    @Enumerated(EnumType.STRING)
+    private Estado estado;
+
 
     @Min(value = 1, message = "La capacidad debe ser al menos 1 persona")
     private int capacidad;
@@ -31,7 +33,7 @@ public class Habitacion {
 
     //constructores
 
-    public Habitacion(String tipo, double precio, String estado, int capacidad) {
+    public Habitacion(String tipo, double precio, Estado estado, int capacidad) {
         this.tipo = tipo;
         this.precio = precio;
         this.estado = estado;
@@ -39,6 +41,11 @@ public class Habitacion {
     }
 
     public Habitacion() {}
+
+    public enum Estado {
+        DISPONIBLE,
+        OCUPADA
+    }
 
     //getters and setters
 
@@ -66,11 +73,11 @@ public class Habitacion {
         this.precio = precio;
     }
 
-    public String getEstado() {
+    public Estado getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(Estado estado) {
         this.estado = estado;
     }
 

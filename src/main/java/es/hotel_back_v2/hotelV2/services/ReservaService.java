@@ -43,7 +43,7 @@ public class ReservaService {
 
         //actualizamos el estado de las habitaciones a 'ocupadas'
         for (Habitacion habitacion : reserva.getHabitaciones()) {
-            habitacionService.actualizarEstadoHabitacion(habitacion.getNumero(), "ocupada");
+            habitacionService.actualizarEstadoHabitacion(habitacion.getNumero(), Habitacion.Estado.OCUPADA);
         }
 
         return reserva;
