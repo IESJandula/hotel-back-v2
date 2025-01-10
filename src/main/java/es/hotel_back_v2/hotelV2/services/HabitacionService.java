@@ -86,4 +86,25 @@ public class HabitacionService {
             throw new RuntimeException("Habitación no encontrada");
         }
     }
+
+    //obtener habitaciones ocupadas
+    public List<Habitacion> obtenerHabitacionesDisponibles(Date fecha) {
+        List<Habitacion> todasLasHabitaciones = habitacionRepository.findAll();
+        List<Habitacion> habitacionesOcupadas = new ArrayList<>();
+        List<Reserva> reservas = reservaRepository.findAll();
+
+        // Identificar habitaciones ocupadas en la fecha proporcionada
+        for (Reserva reserva : reservas) {
+            if (fecha.after(reserva.getFecha_inicio()) && fecha.before(reserva.getFecha_fin())) {
+                habitacionesOcupadas.addAll(reserva.getHabitaciones());
+            }
+        }
+
+        // Crear una lista de habitaciones disponibles (que no están ocupadas)
+        List<Habitacion> habitacionesDisponibles = new ArrayList<>(todasLasHabitaciones);
+        habitacionesDisponibles.removeAll(habitacionesOcupadas);
+
+        return habitacionesDisponibles;
+
+    }
 }

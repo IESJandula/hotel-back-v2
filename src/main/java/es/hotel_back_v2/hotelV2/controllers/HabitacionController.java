@@ -64,4 +64,9 @@ public class HabitacionController {
         return ResponseEntity.ok(habitacionModificada);
     }
 
+
+    @GetMapping("/habitaciones-disponibles/{fecha}")
+    public ResponseEntity<List<Habitacion>> obtenerHabitacionesDisponibles(@PathVariable("fecha") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha) {
+        return ResponseEntity.ok(habitacionService.obtenerHabitacionesDisponibles(fecha));
+    }
 }
