@@ -58,5 +58,10 @@ public class HabitacionController {
         return ResponseEntity.ok(habitacionService.obtenerHabitacionesOcupadas(fecha));
     }
 
+    @PutMapping("/modificar/{numero}")
+    public ResponseEntity<Habitacion> modificarHabitacion(@PathVariable Long numero, @RequestBody Habitacion habitacionActualizada) {
+        Habitacion habitacionModificada = habitacionService.modificarHabitacion(numero, habitacionActualizada);
+        return ResponseEntity.ok(habitacionModificada);
+    }
 
 }

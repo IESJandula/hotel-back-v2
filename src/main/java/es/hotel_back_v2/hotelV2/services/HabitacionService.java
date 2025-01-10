@@ -71,4 +71,19 @@ public class HabitacionService {
 
         return habitacionesOcupadas;
     }
+
+    @Transactional
+    public Habitacion modificarHabitacion(Long numero, Habitacion habitacionActualizada) {
+        Optional<Habitacion> habitacion = habitacionRepository.findById(numero);
+        if (habitacion.isPresent()) {
+            Habitacion h = habitacion.get();
+            h.setTipo(habitacionActualizada.getTipo());
+            h.setPrecio(habitacionActualizada.getPrecio());
+            h.setEstado(habitacionActualizada.getEstado());
+            h.setCapacidad(habitacionActualizada.getCapacidad());
+            return habitacionRepository.save(h);
+        } else {
+            throw new RuntimeException("Habitación no encontrada");
+        }
+    }
 }
