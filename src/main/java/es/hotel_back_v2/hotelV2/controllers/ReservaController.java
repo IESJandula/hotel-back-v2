@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/reserva")
@@ -19,19 +20,22 @@ public class ReservaController {
     @Autowired
     private ReservaService reservaService;
 
-    //crear reserva
+
     @PostMapping("/crear")
-    public String crearReserva(Date fechaInicio, Date fechaFin, String dniCliente, List<Long> numerosHabitaciones) {
+    public ResponseEntity<String> crearReserva(@RequestBody Reserva reserva) {
         try {
-            //intentamos crear la reserva con los datos enviados por el cliente
-            Reserva nuevaReserva = reservaService.crearReserva( fechaInicio,fechaFin, dniCliente,numerosHabitaciones);
-            //si la reserva se crea correctamente, devolvemos un mensaje indicando que fue creada
-            return "Reserva creada correctamente: " + nuevaReserva.getId();
+            Reserva nuevaReserva = reservaService.crearReserva(
+                    reserva.getFecha_inicio(),
+                    reserva.getFecha_fin(),
+                    reserva.getCliente().getDni(),
+                    reserva.getHabitaciones().stream().map(h -> h.getNumero()).collect(Collectors.toList())
+            );
+            return ResponseEntity.ok("Reserva creada correctamente: " + nuevaReserva.getId());
         } catch (Exception e) {
-            //si ocurre un error, devolvemos un mensaje de error
-            return "Hubo un error al crear la reserva: " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Hubo un error al crear la reserva: " + e.getMessage());
         }
     }
+
 
     //mostrar todas las reservas
     @GetMapping("/mostrartodas")

@@ -46,7 +46,7 @@ public class ReservaService {
             throw new RuntimeException("Una o más habitaciones no existen.");
         }
         for (Habitacion habitacion : habitaciones) {
-            if (!habitacion.getEstado().equals("disponible")) {
+            if (habitacion.getEstado() != Habitacion.Estado.DISPONIBLE) {
                 throw new RuntimeException("La habitación " + habitacion.getNumero() + " no está disponible.");
             }
         }
